@@ -1,0 +1,477 @@
+<!DOCTYPE html><html><head>
+      <title>postGIS_LAB</title>
+      <meta charset="utf-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      
+      
+        <script type="text/x-mathjax-config">
+          MathJax.Hub.Config({"extensions":["tex2jax.js"],"jax":["input/TeX","output/HTML-CSS"],"messageStyle":"none","tex2jax":{"processEnvironments":false,"processEscapes":true,"inlineMath":[["$","$"],["\\(","\\)"]],"displayMath":[["$$","$$"],["\\[","\\]"]]},"TeX":{"extensions":["AMSmath.js","AMSsymbols.js","noErrors.js","noUndefined.js"]},"HTML-CSS":{"availableFonts":["TeX"],"imageFont":null},"root":"file:///home/lucas/.atom/packages/markdown-preview-enhanced/node_modules/@shd101wyy/mume/dependencies/mathjax"});
+        </script>
+        <script type="text/javascript" async src="file:////home/lucas/.atom/packages/markdown-preview-enhanced/node_modules/@shd101wyy/mume/dependencies/mathjax/MathJax.js" charset="UTF-8"></script>
+        
+      
+      
+      
+      
+      
+      
+      
+      
+      
+      <style>
+      /**
+ * prism.js Github theme based on GitHub's theme.
+ * @author Sam Clarke
+ */
+code[class*="language-"],
+pre[class*="language-"] {
+  color: #333;
+  background: none;
+  font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+  text-align: left;
+  white-space: pre;
+  word-spacing: normal;
+  word-break: normal;
+  word-wrap: normal;
+  line-height: 1.4;
+
+  -moz-tab-size: 8;
+  -o-tab-size: 8;
+  tab-size: 8;
+
+  -webkit-hyphens: none;
+  -moz-hyphens: none;
+  -ms-hyphens: none;
+  hyphens: none;
+}
+
+/* Code blocks */
+pre[class*="language-"] {
+  padding: .8em;
+  overflow: auto;
+  /* border: 1px solid #ddd; */
+  border-radius: 3px;
+  /* background: #fff; */
+  background: #f5f5f5;
+}
+
+/* Inline code */
+:not(pre) > code[class*="language-"] {
+  padding: .1em;
+  border-radius: .3em;
+  white-space: normal;
+  background: #f5f5f5;
+}
+
+.token.comment,
+.token.blockquote {
+  color: #969896;
+}
+
+.token.cdata {
+  color: #183691;
+}
+
+.token.doctype,
+.token.punctuation,
+.token.variable,
+.token.macro.property {
+  color: #333;
+}
+
+.token.operator,
+.token.important,
+.token.keyword,
+.token.rule,
+.token.builtin {
+  color: #a71d5d;
+}
+
+.token.string,
+.token.url,
+.token.regex,
+.token.attr-value {
+  color: #183691;
+}
+
+.token.property,
+.token.number,
+.token.boolean,
+.token.entity,
+.token.atrule,
+.token.constant,
+.token.symbol,
+.token.command,
+.token.code {
+  color: #0086b3;
+}
+
+.token.tag,
+.token.selector,
+.token.prolog {
+  color: #63a35c;
+}
+
+.token.function,
+.token.namespace,
+.token.pseudo-element,
+.token.class,
+.token.class-name,
+.token.pseudo-class,
+.token.id,
+.token.url-reference .token.variable,
+.token.attr-name {
+  color: #795da3;
+}
+
+.token.entity {
+  cursor: help;
+}
+
+.token.title,
+.token.title .token.punctuation {
+  font-weight: bold;
+  color: #1d3e81;
+}
+
+.token.list {
+  color: #ed6a43;
+}
+
+.token.inserted {
+  background-color: #eaffea;
+  color: #55a532;
+}
+
+.token.deleted {
+  background-color: #ffecec;
+  color: #bd2c00;
+}
+
+.token.bold {
+  font-weight: bold;
+}
+
+.token.italic {
+  font-style: italic;
+}
+
+
+/* JSON */
+.language-json .token.property {
+  color: #183691;
+}
+
+.language-markup .token.tag .token.punctuation {
+  color: #333;
+}
+
+/* CSS */
+code.language-css,
+.language-css .token.function {
+  color: #0086b3;
+}
+
+/* YAML */
+.language-yaml .token.atrule {
+  color: #63a35c;
+}
+
+code.language-yaml {
+  color: #183691;
+}
+
+/* Ruby */
+.language-ruby .token.function {
+  color: #333;
+}
+
+/* Markdown */
+.language-markdown .token.url {
+  color: #795da3;
+}
+
+/* Makefile */
+.language-makefile .token.symbol {
+  color: #795da3;
+}
+
+.language-makefile .token.variable {
+  color: #183691;
+}
+
+.language-makefile .token.builtin {
+  color: #0086b3;
+}
+
+/* Bash */
+.language-bash .token.keyword {
+  color: #0086b3;
+}
+
+/* highlight */
+pre[data-line] {
+  position: relative;
+  padding: 1em 0 1em 3em;
+}
+pre[data-line] .line-highlight-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
+  background-color: transparent;
+  display: block;
+  width: 100%;
+}
+
+pre[data-line] .line-highlight {
+  position: absolute;
+  left: 0;
+  right: 0;
+  padding: inherit 0;
+  margin-top: 1em;
+  background: hsla(24, 20%, 50%,.08);
+  background: linear-gradient(to right, hsla(24, 20%, 50%,.1) 70%, hsla(24, 20%, 50%,0));
+  pointer-events: none;
+  line-height: inherit;
+  white-space: pre;
+}
+
+pre[data-line] .line-highlight:before, 
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-start);
+  position: absolute;
+  top: .4em;
+  left: .6em;
+  min-width: 1em;
+  padding: 0 .5em;
+  background-color: hsla(24, 20%, 50%,.4);
+  color: hsl(24, 20%, 95%);
+  font: bold 65%/1.5 sans-serif;
+  text-align: center;
+  vertical-align: .3em;
+  border-radius: 999px;
+  text-shadow: none;
+  box-shadow: 0 1px white;
+}
+
+pre[data-line] .line-highlight[data-end]:after {
+  content: attr(data-end);
+  top: auto;
+  bottom: .4em;
+}html body{font-family:"Helvetica Neue",Helvetica,"Segoe UI",Arial,freesans,sans-serif;font-size:16px;line-height:1.6;color:#333;background-color:#fff;overflow:initial;box-sizing:border-box;word-wrap:break-word}html body>:first-child{margin-top:0}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{line-height:1.2;margin-top:1em;margin-bottom:16px;color:#000}html body h1{font-size:2.25em;font-weight:300;padding-bottom:.3em}html body h2{font-size:1.75em;font-weight:400;padding-bottom:.3em}html body h3{font-size:1.5em;font-weight:500}html body h4{font-size:1.25em;font-weight:600}html body h5{font-size:1.1em;font-weight:600}html body h6{font-size:1em;font-weight:600}html body h1,html body h2,html body h3,html body h4,html body h5{font-weight:600}html body h5{font-size:1em}html body h6{color:#5c5c5c}html body strong{color:#000}html body del{color:#5c5c5c}html body a:not([href]){color:inherit;text-decoration:none}html body a{color:#08c;text-decoration:none}html body a:hover{color:#00a3f5;text-decoration:none}html body img{max-width:100%}html body>p{margin-top:0;margin-bottom:16px;word-wrap:break-word}html body>ul,html body>ol{margin-bottom:16px}html body ul,html body ol{padding-left:2em}html body ul.no-list,html body ol.no-list{padding:0;list-style-type:none}html body ul ul,html body ul ol,html body ol ol,html body ol ul{margin-top:0;margin-bottom:0}html body li{margin-bottom:0}html body li.task-list-item{list-style:none}html body li>p{margin-top:0;margin-bottom:0}html body .task-list-item-checkbox{margin:0 .2em .25em -1.8em;vertical-align:middle}html body .task-list-item-checkbox:hover{cursor:pointer}html body blockquote{margin:16px 0;font-size:inherit;padding:0 15px;color:#5c5c5c;border-left:4px solid #d6d6d6}html body blockquote>:first-child{margin-top:0}html body blockquote>:last-child{margin-bottom:0}html body hr{height:4px;margin:32px 0;background-color:#d6d6d6;border:0 none}html body table{margin:10px 0 15px 0;border-collapse:collapse;border-spacing:0;display:block;width:100%;overflow:auto;word-break:normal;word-break:keep-all}html body table th{font-weight:bold;color:#000}html body table td,html body table th{border:1px solid #d6d6d6;padding:6px 13px}html body dl{padding:0}html body dl dt{padding:0;margin-top:16px;font-size:1em;font-style:italic;font-weight:bold}html body dl dd{padding:0 16px;margin-bottom:16px}html body code{font-family:Menlo,Monaco,Consolas,'Courier New',monospace;font-size:.85em !important;color:#000;background-color:#f0f0f0;border-radius:3px;padding:.2em 0}html body code::before,html body code::after{letter-spacing:-0.2em;content:"\00a0"}html body pre>code{padding:0;margin:0;font-size:.85em !important;word-break:normal;white-space:pre;background:transparent;border:0}html body .highlight{margin-bottom:16px}html body .highlight pre,html body pre{padding:1em;overflow:auto;font-size:.85em !important;line-height:1.45;border:#d6d6d6;border-radius:3px}html body .highlight pre{margin-bottom:0;word-break:normal}html body pre code,html body pre tt{display:inline;max-width:initial;padding:0;margin:0;overflow:initial;line-height:inherit;word-wrap:normal;background-color:transparent;border:0}html body pre code:before,html body pre tt:before,html body pre code:after,html body pre tt:after{content:normal}html body p,html body blockquote,html body ul,html body ol,html body dl,html body pre{margin-top:0;margin-bottom:16px}html body kbd{color:#000;border:1px solid #d6d6d6;border-bottom:2px solid #c7c7c7;padding:2px 4px;background-color:#f0f0f0;border-radius:3px}@media print{html body{background-color:#fff}html body h1,html body h2,html body h3,html body h4,html body h5,html body h6{color:#000;page-break-after:avoid}html body blockquote{color:#5c5c5c}html body pre{page-break-inside:avoid}html body table{display:table}html body img{display:block;max-width:100%;max-height:100%}html body pre,html body code{word-wrap:break-word;white-space:pre}}.markdown-preview{width:100%;height:100%;box-sizing:border-box}.markdown-preview .pagebreak,.markdown-preview .newpage{page-break-before:always}.markdown-preview pre.line-numbers{position:relative;padding-left:3.8em;counter-reset:linenumber}.markdown-preview pre.line-numbers>code{position:relative}.markdown-preview pre.line-numbers .line-numbers-rows{position:absolute;pointer-events:none;top:1em;font-size:100%;left:0;width:3em;letter-spacing:-1px;border-right:1px solid #999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none}.markdown-preview pre.line-numbers .line-numbers-rows>span{pointer-events:none;display:block;counter-increment:linenumber}.markdown-preview pre.line-numbers .line-numbers-rows>span:before{content:counter(linenumber);color:#999;display:block;padding-right:.8em;text-align:right}.markdown-preview .mathjax-exps .MathJax_Display{text-align:center !important}.markdown-preview:not([for="preview"]) .code-chunk .btn-group{display:none}.markdown-preview:not([for="preview"]) .code-chunk .status{display:none}.markdown-preview:not([for="preview"]) .code-chunk .output-div{margin-bottom:16px}.scrollbar-style::-webkit-scrollbar{width:8px}.scrollbar-style::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}.scrollbar-style::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode]){position:relative;width:100%;height:100%;top:0;left:0;margin:0;padding:0;overflow:auto}html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{position:relative;top:0}@media screen and (min-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em calc(50% - 457px + 2em)}}@media screen and (max-width:914px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode]) .markdown-preview{font-size:14px !important;padding:1em}}@media print{html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{display:none}}html body[for="html-export"]:not([data-presentation-mode]) #sidebar-toc-btn{position:fixed;bottom:8px;left:8px;font-size:28px;cursor:pointer;color:inherit;z-index:99;width:32px;text-align:center;opacity:.4}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] #sidebar-toc-btn{opacity:1}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc{position:fixed;top:0;left:0;width:300px;height:100%;padding:32px 0 48px 0;font-size:14px;box-shadow:0 0 4px rgba(150,150,150,0.33);box-sizing:border-box;overflow:auto;background-color:inherit}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar{width:8px}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-track{border-radius:10px;background-color:transparent}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc::-webkit-scrollbar-thumb{border-radius:5px;background-color:rgba(150,150,150,0.66);border:4px solid rgba(150,150,150,0.66);background-clip:content-box}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc a{text-decoration:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{padding:0 1.6em;margin-top:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc li{margin-bottom:.8em}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .md-sidebar-toc ul{list-style-type:none}html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{left:300px;width:calc(100% -  300px);padding:2em calc(50% - 457px -  150px);margin:0;box-sizing:border-box}@media screen and (max-width:1274px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{padding:2em}}@media screen and (max-width:450px){html body[for="html-export"]:not([data-presentation-mode])[html-show-sidebar-toc] .markdown-preview{width:100%}}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .markdown-preview{left:50%;transform:translateX(-50%)}html body[for="html-export"]:not([data-presentation-mode]):not([html-show-sidebar-toc]) .md-sidebar-toc{display:none}
+body {
+  text-align: justify;
+}
+.markdown-preview.markdown-preview h1,
+.markdown-preview.markdown-preview h2,
+.markdown-preview.markdown-preview h3,
+.markdown-preview.markdown-preview h4,
+.markdown-preview.markdown-preview h5,
+.markdown-preview.markdown-preview h6,
+.markdown-preview.markdown-preview pre,
+.markdown-preview.markdown-preview code {
+  color: DimGrey;
+  font-size: 22px;
+}
+.markdown-preview.markdown-preview table {
+  font-size: small;
+  border-collapse: collapse;
+  border-spacing: 0;
+  margin-left: auto;
+  margin-right: auto;
+  border-bottom: 1px solid #000;
+  border-top: 1px solid #000;
+}
+.markdown-preview.markdown-preview table thead th {
+  border-bottom: 2px solid #000;
+}
+.markdown-preview.markdown-preview caption {
+  text-align: left;
+}
+.markdown-preview.markdown-preview figure {
+  text-align: left;
+  font-size: small;
+  text-indent: 0;
+  margin: 0.5em;
+  padding: 0.5em;
+}
+
+      </style>
+    </head>
+    <body for="html-export">
+      <div class="mume markdown-preview  ">
+      <h1 id="lab-introduction-into-postgis">Lab &#x2018;Introduction into PostGIS&#x2019;</h1>
+<p>The following is based on the blog <a href="http://duspviz.mit.edu/tutorials/intro-postgis.php"><em>Building a Free and Open-Source Spatial Database Using PostgreSQL and PostGIS</em></a></p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>If not installed, install:</p>
+<ol type="i">
+<li><a href="https://www.postgresql.org/download/">PostgreSQL</a></li>
+<li><a href="https://www.pgadmin.org/download/">pgAmin4</a></li>
+<li><a href="https://www.qgis.org/en/site/forusers/download.html">QGIS</a></li>
+<li><a href="https://postgis.net/install/">PostGIS</a></li>
+</ol>
+<p>To install 1., 2. &amp; 4. you can use EDB https://www.enterprisedb.com/downloads/postgres-postgresql-downloads. First, install PostgreSQL and pgAmin4, then use the StackBuilder package manager to install PostGIS (under Spatial Extensions).</p>
+<h2 id="set-up-postgresql-db-with-pgadmin">Set-up PostgreSQL-DB with pgAdmin</h2>
+<ol type="1">
+<li>Start <strong>pgAmin4</strong> (graphical user interface for interacting with <strong>PostgreSQL</strong> databases).</li>
+<li>Create <strong>PostgreSQL</strong> DB Server (right click on &#x2018;Servers&#x2019;) and enter DB informations (tab &#x2018;General&#x2019;) &amp; credentials (tab &#x2018;Connection&#x2019;).</li>
+</ol>
+<p><img src="https://i.imgur.com/mZKt7k8.png"></p>
+<ol start="3" type="1">
+<li>Create a schema (right click on &#x2018;Schemas&#x2019;) in the (default) DB &#x2018;postgres&#x2019;, name it &#x2018;mod3_demo&#x2019;.</li>
+</ol>
+<p><img src="https://i.imgur.com/QhsQ2FY.png"></p>
+<h2 id="load-data-into-the-database">Load Data into the Database</h2>
+<ol type="1">
+<li>Download &amp; unzip the &#x2018;GEO_DATA.zip&#x2019; folder from the OLAT course.</li>
+<li>Navigate to the tab &#x2018;Tools&#x2019; &amp; then &#x2018;Query Tool&#x2019; to open up a SQL query window in pgAdmin4:</li>
+</ol>
+<p><img src="https://i.imgur.com/w2RVNUS.png"></p>
+<ol start="3" type="1">
+<li>Create an empty table named &#x2018;coffee_shops&#x2019; (based on the structure of the &#x2018;coffee_shops.csv&#x2019; file) in the schema &#x2018;mod3_demo&#x2019; by running following query:</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>CREATE TABLE mod3_demo.coffee_shops
+    (
+      id serial NOT NULL,
+      name character varying(50),
+      address character varying(50),
+      city character varying(50),
+      state character varying(50),
+      zip character varying(10),
+      lat numeric,
+      lon numeric
+    );</code></pre>
+<p><img src="https://i.imgur.com/z5sD82d.png"></p>
+<ol start="4" type="1">
+<li>Refresh the schema &#x2018;mod3_demo&#x2019;</li>
+<li>Load the &#x2018;coffee_shops.csv&#x2019; data in the table by running following query (adjust the path):</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>COPY mod3_demo.coffee_shops(id,
+      name,
+      address,
+      city,
+      state,
+      zip,
+      lat,
+      lon)
+FROM &apos;.../GEO_DATA/coffee_shops.csv&apos;
+DELIMITER &apos;,&apos;
+CSV HEADER;</code></pre>
+<ol start="5" type="1">
+<li>View the data in the table by right click on it -&gt; View Data -&gt; View All Rows.</li>
+</ol>
+<h2 id="set-up-postgis">Set-up PostGIS</h2>
+<ol type="1">
+<li>To use the &#x2018;PostGIS&#x2019; it must be activated (once) by running:</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>CREATE EXTENSION postgis;</code></pre>
+<ol start="2" type="1">
+<li>To check (and update) the installed &#x2018;PostGIS&#x2019; version run:</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>ALTER EXTENSION postgis UPDATE;</code></pre>
+<h2 id="make-the-data-geospatial">Make the Data geospatial</h2>
+<ol type="1">
+<li>Create a &#x2018;geom&#x2019; field (column) with the geometry type &#x2018;Point&#x2019; and the coordinate reference system &#x2018;WGS84&#x2019;(EPSG 4326) for the table &#x2018;mod3_demo.coffee_shops&#x2019; using following query:</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>ALTER TABLE mod3_demo.coffee_shops
+    ADD COLUMN geom geometry(POINT,4326);</code></pre>
+<ol start="2" type="1">
+<li>Calculate the geometries (i.e.&#xA0;point locations) based on the columns &#x2018;lat&#x2019; &amp; &#x2018;lon&#x2019; using the PostGIS function <code>ST_MakePoint(,)</code> and set the coordinate reference system to &#x2018;WGS84&#x2019; using <code>ST_SetSRID()</code>:</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>UPDATE mod3_demo.coffee_shops
+    SET geom = ST_SetSRID(ST_MakePoint(lon,lat),4326);</code></pre>
+<ol start="3" type="1">
+<li>Create a spatial index &#x2018;coffee_shops_gist&#x2019; on the &#x2018;geom&#x2019; field of the table by:</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>CREATE INDEX coffee_shops_gist
+  ON mod3_demo.coffee_shops
+  USING gist (geom);</code></pre>
+<ol start="4" type="1">
+<li>View the geometries of the coffee-shops in the table by right click on it -&gt; View Data -&gt; View All Rows. Go to the column &#x2018;geom&#x2019; and click the symbolized eye.</li>
+</ol>
+<hr>
+<h2 id="loading-geo-data-into-the-postgresql-db-from-qgis">Loading (Geo-)Data into the PostgreSQL-DB from QGIS</h2>
+<ol type="1">
+<li>Load the &#x2018;neighborhoods.shp&#x2019; file into QGIS.</li>
+<li><p>Establish a new PostGIS connection using the QGIS Browser:</p>
+<p><img src="https://i.imgur.com/rGPWIRD.jpg"></p></li>
+<li>Load the table &#x2018;coffee_shops&#x2019; into QGIS.</li>
+<li><p>Import the &#x2018;Shapefile&#x2019;-data into our DB (in the Schema &#x2018;mod3_demo&#x2019;) using the QGIS plugin &#x2018;DB Manager&#x2019;. Hereby, we have different operations e.g.&#xA0;set the primary key, name the geometry column or create a spatial index.</p></li>
+</ol>
+<figure>
+<img src="https://i.imgur.com/eqYkCpR.jpg" alt="Selection_434"><figcaption>Selection_434</figcaption>
+</figure>
+<hr>
+<h2 id="postgis-use-case-examples">PostGIS use-case examples</h2>
+<ol type="1">
+<li>Get the geometry type of both tables &#x2018;mod3_demo.coffee_shops&#x2019; and &#x2018;mod3_demo.neighborhoods&#x2019; using the PostGIS function <code>ST_GeometryType()</code>:</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>SELECT ST_GeometryType(pts.geom) pts_geom, ST_GeometryType(shp.geom) shp_geom
+    FROM mod3_demo.coffee_shops pts, mod3_demo.neighborhoods shp
+    LIMIT 1;</code></pre>
+<ol start="2" type="1">
+<li>Number of coffee-shops per neighborhood, i.e.&#xA0;selection by intersection:</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>SELECT  n.name as name, count(*)
+    FROM  mod3_demo.coffee_shops AS cs, mod3_demo.neighborhoods AS n
+    WHERE ST_Intersects(cs.geom, n.geom)
+    GROUP BY n.name;</code></pre>
+<ol start="3" type="1">
+<li>Add the neighborhood where the shop is located to the table &#x2018;mod3_demo.coffee_shops&#x2019;:</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>ALTER TABLE mod3_demo.coffee_shops
+ADD neighborhood;
+
+UPDATE mod3_demo.coffee_shops
+    SET neighborhood = n_name
+    FROM
+        (SELECT cs.id as cs_id, n.name as n_name
+        FROM  mod3_demo.coffee_shops AS cs,  mod3_demo.neighborhoods AS n
+        WHERE ST_Intersects(cs.geom, n.geom)) x
+    WHERE id = cs_id;</code></pre>
+<ol start="3" type="1">
+<li>Order the coffee-shops by (euclidean) distance to a point (location MIT) with the WGS84 coordinates -71.093500 (lat) &amp; 42.359055 (lon):</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>SELECT name, address
+    FROM coffee_shops
+    ORDER BY geom &lt;-&gt; ST_SetSRID(ST_MakePoint(-71.093500,42.359055),4326);</code></pre>
+<ol start="4" type="1">
+<li>Copy the &#x2018;coffee_shops_utm&#x2019; to a new table named &#x2018;coffee_shops_utm&#x2019;. Reproject the points in &#x2018;mod3_demo.coffee_shops_utm&#x2019; and the MIT location to the metric CRS &#x2018;UTM Zone 19N&#x2019; (EPSG code 32619). Find all coffee-shops (&#x2018;name&#x2019; &amp; &#x2018;address&#x2019;) within 500 m around the MIT:</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>CREATE TABLE mod3_demo.coffee_shops_utm AS SELECT * FROM mod3_demo.coffee_shops;
+
+ALTER TABLE mod3_demo.coffee_shops_utm
+    ALTER COLUMN geom TYPE geometry(POINT, 32619)
+    USING ST_Transform(geom, 32619);
+
+SELECT name, address
+     FROM mod3_demo.coffee_shops_utm
+     WHERE ST_DWithin(geom, ST_Transform(ST_SetSRID(ST_MakePoint(-71.093500,42.359055), 4326), 32619), 500);</code></pre>
+<ol start="5" type="1">
+<li>Find all coffee-shops (&#x2018;name&#x2019; &amp; &#x2018;address&#x2019;) within 500 m around the MIT, add the specific distance, and order the points accordingly:</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>SELECT name, address, ST_Distance(geom, mit_coord) AS distance
+    FROM mod3_demo.coffee_shops_utm, ST_Transform(ST_SetSRID(ST_MakePoint(-71.093500,42.359055), 4326), 32619) AS mit_coord
+    WHERE ST_DWithin(geom, mit_coord, 500) ORDER BY distance;</code></pre>
+<ol start="6" type="1">
+<li>Clustering methods in PostGIS - Create a new table &#x2018;mod3_demo.coffee_shops_utm_cls&#x2019; and use the PostGIS functions &#x2018;ST_ClusterKMeans&#x2019; to sort the coffee-shops in 3 distance-based clusters using the typical clustering method &#x2018;K-means&#x2019;:</li>
+</ol>
+<pre class="text language-text" data-role="codeBlock" data-info="text"><code>CREATE TABLE mod3_demo.coffee_shops_utm_cls AS SELECT ST_ClusterKMeans(geom,3) OVER() AS cid, id, geom
+    FROM mod3_demo.coffee_shops_utm;</code></pre>
+<ol start="7" type="1">
+<li>Display the &#x2018;mod3_demo.coffee_shops_utm_cls&#x2019; in QGIS.</li>
+</ol>
+
+      </div>
+      
+      
+    
+    
+    
+    
+    
+    
+    
+    
+  
+    </body></html>

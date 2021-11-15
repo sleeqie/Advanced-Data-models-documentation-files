@@ -1,0 +1,13 @@
+Host: 139.14.20.252
+User: student
+Pass: tYXL5293091a2LGMkIsp
+
+CREATE SCHEMA <SURNAME>;
+
+CREATE TABLE <SURNAME>.coffee_shops AS (
+	SELECT * FROM mod3_demo.coffee_shops
+);
+
+CREATE TABLE <SURNAME>.neighborhoods AS (
+	SELECT * FROM mod3_demo.neighborhoods
+);

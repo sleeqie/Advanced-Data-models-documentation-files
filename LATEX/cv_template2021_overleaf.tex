@@ -1,0 +1,146 @@
+% LaTeX introduction practical 2/2
+
+% Dr. Noël Juvigny-Khenafou
+% University of Koblenz-Landau, Winter semester 2021
+
+% In this practical we will create a rough template for an academic CV to go around some of the features of LaTeX.
+% You can then later use this template and improve it for your own CV.
+% Enjoy !
+
+\documentclass[11pt, a4paper]{moderncv} % we define the type of document
+\moderncvtheme[grey]{classic} % we set the theme. More colours and theme are available and I refer you to the documentation of the package for that.
+\usepackage[english]{babel}
+
+% package to manage bibliography
+\usepackage[
+backend=biber,
+bibstyle=numeric,
+citestyle=authoryear,
+sorting=ydnt,
+url=false,
+isbn=false,
+minbibnames=10,
+maxbibnames=10
+]{biblatex}
+
+\addbibresource{cv_biblio.bib} % here is where we tell biblatex the name of the library
+
+%To highlight one author:
+% Run biber once, find the hash you want in the generated .bbl file 
+% and paste here:
+
+\newcommand*{\boldnames}{}
+\newcommand*{\mkboldifhashinlist}[1]{%
+  \xifinlist{\thefield{hash}}{\boldnames}
+    {\mkbibbold{#1}}
+    {#1}}
+
+\DeclareNameWrapperFormat{boldifhashinlist}{%
+  \renewcommand*{\mkbibcompletename}{\mkboldifhashinlist}%
+  #1}
+
+\DeclareNameWrapperAlias{sortname}{default}
+\DeclareNameWrapperAlias{default}{boldifhashinlist}
+
+
+\newcommand*{\detokenizelistadd}[2]{%
+  \listeadd#1{\detokenize{#2}}}
+
+\renewcommand*{\boldnames}{}
+\forcsvlist{\detokenizelistadd\boldnames}
+  {{ba76807aca2e7c8f36a0de7bf74e4fc7},{87c792a84d46355ede51faa39ef4432a},{1c3fff0738e5fb7fe82a955af6e85ee9}}   
+
+% define the encoding
+\usepackage[utf8]{inputenc} % enables to enter accent for Mac and Linux users
+% for windows users use: \usepackage[latin1]{inputenc}
+
+% adjust the page margins
+\usepackage[scale=0.8]{geometry}
+\recomputelengths
+
+% enter personal data
+\firstname{John}
+\familyname{Snow}
+\title{Curriculum vitae}
+\address{123 The Wall }{XXXXX Westeros}
+\mobile{+XXX XXX XXX}
+\phone{+XXX XXX XXX}
+\fax{+XXX XXX XXX}
+\email{jsnow@westeros.org}
+\extrainfo{\href{www.mywebsite.com}{www.mywebsite.com}}
+% You now need to create a folder "image" and upload the pictures you need for your document.
+\graphicspath{ {image/} } % define the path of where the images are stored
+\photo[64pt]{picture1} % add your picture
+\quote{You can add a short summary of your career and future plans here}
+
+% Other packages: 
+% package to split the page in columns
+\usepackage{multicol} 
+
+% package to compact lists
+\usepackage{enumitem}
+
+% Package and code to add the page numbering in the footer.
+\usepackage{lastpage}
+\rfoot{\addressfont\itshape\textcolor{gray}{Page \thepage\ of \pageref{LastPage}}}
+% Note that in a standard document type such as an article, you would only need to add \pagenumbering{arabic} to have the page numbering.
+
+% package to manage pictures
+\usepackage {graphicx}
+
+
+% ------- Your CV starts here --------
+
+\begin{document} 
+\maketitle
+
+\section{EDUCATION}
+	\cventry{year-year}{Master in Ecotoxicology}{University of Koblenz-Landau}{Germany}
+\closesection{}
+
+\section{KEY SKILLS}
+	\subsection{Programming}
+		\begin{multicols}{3}
+		\begin{itemize}
+			\item{\LaTeX}
+			\item{R}
+			\item{Markdown}
+			\item{Python}
+			\item{Java}
+		\end{itemize}
+		\end{multicols}
+		
+\closesection{}
+
+\section{PUBLICATIONS}% not printing the publications somehow
+	\nocite{*}
+	\printbibliography[heading=none]
+\closesection
+
+\section{RESEARCH}
+Type the text that you want to have in your research statement here.
+\par % this command line introduces a new paragraph. Try to remove it and see what happens.
+You can \textit{see} \underline{that} \textbf{we can modify} the \textbf{\underline{\textit{appearance}}} of the text as we want.
+\closesection
+
+\section{HONOURS AND AWARDS}
+\section{FUNDING}
+Similarly to the none number list using \textit{ITEMIZE}, we can also create numbered lists:
+
+    \begin{enumerate}
+        \item Funding 1
+        \item Funding 2
+    \end{enumerate}
+
+\closesection
+
+
+\section{ADD ANY OTHER SECTION}
+% I now show you how to insert an image in a section or paragraph
+% define where we want the image place
+% h: Here, t: Top of the page, b: Bottom, p: Separate page, !: improves the float
+We now insert a picture: % we can see here that the double slash insert a line spacing.
+
+\centering
+\includegraphics[width=8cm]{picture1.png} % there is no need to adjust the height as this is done automatically.
+\end{document}
